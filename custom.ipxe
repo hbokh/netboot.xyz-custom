@@ -1,12 +1,19 @@
 #!ipxe
-###
-### netboot.xyz-custom menu
-###
 
-:start
-echo Hello world!
-sleep 10
-goto custom_exit
+dhcp
+show dns
 
-:custom_exit
-exit 0
+ifstat
+
+echo Printing the routing table
+route
+
+echo CentOS 7.9 for UEFI system
+
+initrd http://192.168.178.51:81/centos/7.9/x86_64/initrd.img
+kernel http://192.168.178.51:81/centos/7.9/x86_64/vmlinuz \
+   initrd=initrd.imga \
+   inst.ks=http://192.168.178.51:81/kickseeds/centos/ks7-UEFI-x86_64.cfg \
+   inst.repo=http://centos.mirror.transip.nl/7.9.2009/os/x86_64/ \
+   lang=en_US keymap=us ip=dhcp
+boot
